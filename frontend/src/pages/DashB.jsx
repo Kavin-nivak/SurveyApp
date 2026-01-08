@@ -1,41 +1,42 @@
-import "../chartConfig";  
+import "../chartConfig";
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import api from "../api/axios";
 import { useParams } from "react-router-dom";
-
-
+ 
 export default function DashB() {
   const { id } = useParams();
-  const [responses, setResponses] = useState([]);
-
-  const loadData = async () => {
-    const res = await api.get(`/surveys/${id}/results`);
-    setResponses(res.data);
-  };
-
+   const [responses, setResponses] = useState([]);
   useEffect(() => {
-  loadData();
-}, [id]);
+    api.get(`/surveys/${id}/results`).then((res) => {
+      setResponses(res.data);
+    });
+  }, [id]);
 
+  //COUNT OPTIONS
+  const optionCounts = {};
+  responses.forEach((res) => {
+    res.answers.forEach((ans) => {
+      optionCounts[ans] = (optionCounts[ans] || 0) + 1;
+    });
+  });
 
   return (
     <div>
       <h2>Analytics Dashboard</h2>
       <h3>Total Responses: {responses.length}</h3>
 
-     <Bar
-  data={{
-    labels: responses.map((_, i) => `User ${i + 1}`),
-    datasets: [
-      {
-        label: "Responses",
-        data: responses.map(() => 1),
-      },
-    ],
-  }}
-/>
-
+      <Bar
+        data={{
+          labels: Object.keys(optionCounts),
+          datasets: [
+            {
+              label: "Option Selection Count",
+              data: Object.values(optionCounts)
+            }
+          ]
+        }}
+      />
     </div>
   );
 }
