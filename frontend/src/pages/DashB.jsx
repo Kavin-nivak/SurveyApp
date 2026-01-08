@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import api from "../api/axios";
 import { useParams } from "react-router-dom";
-import socket from "../socket";
+
 
 export default function DashB() {
   const { id } = useParams();
@@ -15,14 +15,9 @@ export default function DashB() {
   };
 
   useEffect(() => {
-    loadData();
+  loadData();
+}, [id]);
 
-    socket.on("refresh", (surveyId) => {
-      if (surveyId === id) loadData();
-    });
-
-    return () => socket.off("refresh");
-  }, [id]);
 
   return (
     <div>

@@ -5,11 +5,16 @@ import styles from "../styles/SurveyList.module.css";
 
 export default function SurveyList() {
   const [surveys, setSurveys] = useState([]);
-
-  const loadSurveys = () => {
-    api.get("/surveys").then((res) => setSurveys(res.data));
-  };
-
+  
+const loadSurveys = async () => {
+  try {
+    const res = await api.get("/surveys");
+    setSurveys(res.data);
+  } catch (err) {
+    console.error("Load surveys failed:", err);
+    alert("Failed to load surveys");
+  }
+};
   useEffect(() => {
     loadSurveys();
   }, []);

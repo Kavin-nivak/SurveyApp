@@ -4,7 +4,7 @@ const Response = require("../models/Response");
 //  --> CREATE SURVEY
 exports.createSurvey = async (req, res) => {
   try {
-    console.log("USER:", req.user);   // 🔥 ADD THIS
+    console.log("USER:", req.user); 
 
     const survey = new Survey({
       title: req.body.title,
@@ -16,7 +16,7 @@ exports.createSurvey = async (req, res) => {
     res.json({ message: "Survey created" });
 
   } catch (err) {
-    console.error("CREATE SURVEY ERROR:", err); // 🔥 ADD THIS
+    console.error("CREATE SURVEY ERROR:", err); 
     res.status(500).json({ message: err.message });
   }
 };
@@ -72,7 +72,7 @@ exports.deleteSurvey = async (req, res) => {
     const { id } = req.params;
 
     await Survey.findByIdAndDelete(id);
-    await Response.deleteMany({ surveyId: id }); // optional: clean responses
+    await Response.deleteMany({ surveyId: id }); // --> clean responsee
 
     res.json({ message: "Survey deleted successfully" });
   } catch (err) {

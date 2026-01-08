@@ -7,14 +7,14 @@ export default function CreateSurvey() {
   const [questions, setQuestions] = useState([]);
 
   const addQuestion = () => {
-    setQuestions(prev => [
+    setQuestions((prev) => [
       ...prev,
       { text: "", type: "text", options: [] }
     ]);
   };
 
   const updateQuestionText = (index, value) => {
-    setQuestions(prev =>
+    setQuestions((prev) =>
       prev.map((q, i) =>
         i === index ? { ...q, text: value } : q
       )
@@ -22,7 +22,7 @@ export default function CreateSurvey() {
   };
 
   const updateQuestionType = (index, value) => {
-    setQuestions(prev =>
+    setQuestions((prev) =>
       prev.map((q, i) =>
         i === index ? { ...q, type: value, options: [] } : q
       )
@@ -30,7 +30,7 @@ export default function CreateSurvey() {
   };
 
   const addOption = (qIndex) => {
-    setQuestions(prev =>
+    setQuestions((prev) =>
       prev.map((q, i) =>
         i === qIndex
           ? { ...q, options: [...q.options, ""] }
@@ -40,7 +40,7 @@ export default function CreateSurvey() {
   };
 
   const updateOption = (qIndex, oIndex, value) => {
-    setQuestions(prev =>
+    setQuestions((prev) =>
       prev.map((q, i) =>
         i === qIndex
           ? {
@@ -55,16 +55,21 @@ export default function CreateSurvey() {
   };
 
   const createSurvey = async () => {
-    if (!title || questions.length === 0) {
-      alert("Add title and questions");
+    if (!title.trim() || questions.length === 0) {
+      alert("Add title and at least one question");
       return;
     }
 
-    await api.post("/surveys", { title, questions });
-    alert("Survey Created ");
+    try {
+      await api.post("/surveys", { title, questions });
+      alert("Survey Created Successfully ");
 
-    setTitle("");
-    setQuestions([]);
+      setTitle("");
+      setQuestions([]);
+    } catch (err) {
+      console.error("Create survey error:", err);
+      alert("Survey creation failed ");
+    }
   };
 
   return (

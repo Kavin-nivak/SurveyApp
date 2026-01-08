@@ -11,11 +11,10 @@ const {
 const router = express.Router();
 
 
-router.get("/", auth, getSurveys);
-router.post("/", auth, createSurvey);
-router.post("/:id/response", submitResponse);
+router.get("/", getSurveys);
 router.get("/:id/results", getResults);
-
+router.post("/:id/response", submitResponse);
+router.post("/", auth, createSurvey);
 router.delete("/:id", auth, deleteSurvey); 
 
 module.exports = router;
